@@ -1,8 +1,9 @@
 import { DataGrid } from '@mui/x-data-grid'
 import React from 'react'
 
-const SearchResults = ({ resultsState }) => {
+const SearchResults = ({ resultsState, selectedState }) => {
     const [ results, ] = resultsState
+    const [, setSelected ] = selectedState
 
     const columns = [
         {field: 'id', hide: true},
@@ -11,8 +12,12 @@ const SearchResults = ({ resultsState }) => {
     ]
 
     return (
-        <div style={{height: '40rem'}}>
-            <DataGrid columns={columns} rows={results} />
+        <div>
+            <DataGrid 
+                columns={columns} 
+                rows={results} 
+                onRowClick={ev => setSelected(ev.id)} 
+            />
         </div>
     )
 }
