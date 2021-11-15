@@ -23,6 +23,8 @@ export const fetchArticleExcerpt = async (title) => {
         action: 'query',
         prop: 'extracts',
         exlimit: 1,
+        exintro: true,
+        exchars: 800,
         titles: title,
         explaintext: true,
         format: 'json',
