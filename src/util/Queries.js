@@ -2,7 +2,7 @@ export const fetchArticleTitle = async (name, year) => {
     const response = await fetch('https://en.wikipedia.org/w/api.php?' + new URLSearchParams({
         action: 'query',
         list: 'search',
-        srsearch: `"${name + '" ' + year}`,
+        srsearch: `"${name + '" film ' + year}`,
         format: 'json',
         origin: '*'
     }), {
@@ -16,6 +16,30 @@ export const fetchArticleTitle = async (name, year) => {
     const foundArticles = await response.json()
 
     return foundArticles.query.search[0].title
+}
+
+export const fetchArticleExcerpt = async (title) => {
+    const response = await fetch('https://en.wikipedia.org/w/api.php?' + new URLSearchParams({
+        action: 'query',
+        prop: 'extracts',
+        exlimit: 1,
+        titles: title,
+        explaintext: true,
+        format: 'json',
+        origin: '*'
+    }), {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        mode: 'cors'
+    })
+
+    const articleData = await response.json()
+
+    const page = Object.keys(articleData.query.pages)[0]
+
+    return articleData.query.pages[page].extract
 }
 
 export const fetchImdbId = async (name, year) => {

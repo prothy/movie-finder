@@ -3,7 +3,7 @@ import { Skeleton } from '@mui/material'
 import { Container } from '@material-ui/core'
 
 import Description from './Description'
-import { fetchArticleTitle, fetchImdbId } from '../util/Queries'
+import { fetchArticleExcerpt, fetchArticleTitle, fetchImdbId } from '../util/Queries'
 
 const DescriptionBox = ({ selectedState, resultsState }) => {
     const [selected, ] = selectedState
@@ -22,13 +22,13 @@ const DescriptionBox = ({ selectedState, resultsState }) => {
             const wpTitle = await fetchArticleTitle(selectedMovie.name, selectedMovie.year)
             const imdbId = await fetchImdbId(selectedMovie.name, selectedMovie.year)
 
-            console.log(wpTitle)
+            const excerpt = await fetchArticleExcerpt(wpTitle)
 
             setInfo(prevState => ({
                 ...prevState,
-                title: wpTitle,
                 wikipedia: 'https://en.wikipedia.org/wiki/' + wpTitle,
-                imdb: 'https://imdb.com/title/' + imdbId
+                imdb: 'https://imdb.com/title/' + imdbId,
+                excerpt
             }))
 
             setLoading(false)

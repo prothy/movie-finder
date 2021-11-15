@@ -8,7 +8,7 @@ const Description = ({ info }) => {
                 <a href={info.imdb} target="_blank" rel="noreferrer">IMDB</a>
                 <a href={info.wikipedia} target="_blank" rel="noreferrer">Wikipedia</a>
             </div>
-            <p>{info.overview}</p>
+            <p>{info.excerpt}</p>
             <div>
                 <h3>Cast</h3>
                 {/* {info.cast.map(member => (
