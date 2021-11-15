@@ -1,17 +1,20 @@
 import React, { useState } from 'react'
-import { TextField } from '@mui/material'
+import { CircularProgress, TextField } from '@mui/material'
 import { Button } from '@material-ui/core'
 import _ from 'lodash'
 
 import './SearchInput.css'
 
-const SearchInput = ({ resultsState, detailedResultsState }) => {    
+const SearchInput = ({ resultsState, detailedResultsState, resultsLoadingState }) => {    
     const [, setResults] = resultsState
     const [, setDetailedResults] = detailedResultsState
+    const [resultsLoading, setResultsLoading] = resultsLoadingState
+
     const [searchVal, setSearchVal] = useState('')
 
     const searchDatabase = async (ev) => {
         ev.preventDefault()
+        setResultsLoading(true)
 
         try {
             const query = `
@@ -51,11 +54,12 @@ const SearchInput = ({ resultsState, detailedResultsState }) => {
             const moviesArr = responseObj.data.searchMovies
 
             setDetailedResults(moviesArr)
-            // below is used for overview when listing results
             setResults(moviesArr.map(movie => {
                 movie.year = new Date(movie.releaseDate).getFullYear()
                 return _.pick(movie, ['id', 'name', 'year'])
             }))
+
+            setResultsLoading(false)
 
         } catch (e) {
             console.error(e)
@@ -70,7 +74,7 @@ const SearchInput = ({ resultsState, detailedResultsState }) => {
                 variant="outlined"
                 onChange={ev => setSearchVal(ev.target.value)} 
             />
-            <Button variant='outlined' size="large" type="submit">Search</Button>
+            <Button variant='outlined' size="large" type="submit">{resultsLoading ? <CircularProgress/> : 'Search'}</Button>
         </form>
     )
 }
