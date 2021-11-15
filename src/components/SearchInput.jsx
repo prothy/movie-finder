@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TextField } from '@mui/material'
 import { Button } from '@material-ui/core'
+import _ from 'lodash'
 
 import './SearchInput.css'
 
-const SearchInput = ({ resultsState }) => {    
+const SearchInput = ({ resultsState, detailedResultsState }) => {    
     const [, setResults] = resultsState
+    const [, setDetailedResults] = detailedResultsState
+    const [searchVal, setSearchVal] = useState('')
 
     const searchDatabase = async (ev) => {
-        const searchVal = ev.target.value
+        ev.preventDefault()
 
         try {
             const query = `
@@ -47,7 +50,12 @@ const SearchInput = ({ resultsState }) => {
             const responseObj = await response.json()
             const moviesArr = responseObj.data.searchMovies
 
-            setResults(moviesArr)
+            setDetailedResults(moviesArr)
+            // below is used for overview when listing results
+            setResults(moviesArr.map(movie => {
+                movie.year = new Date(movie.releaseDate).getFullYear()
+                return _.pick(movie, ['id', 'name', 'year'])
+            }))
 
         } catch (e) {
             console.error(e)
@@ -55,15 +63,15 @@ const SearchInput = ({ resultsState }) => {
     }
 
     return (
-        <span className="search-input">
+        <form className="search-input" onSubmit={searchDatabase}>
             <TextField 
                 label="Movie name" 
                 margin="dense"
                 variant="outlined"
-                onChange={ev => {if (ev.target.value.length > 2) searchDatabase(ev)}} 
+                onChange={ev => setSearchVal(ev.target.value)} 
             />
-            <Button variant='outlined' size="large">Search</Button>
-        </span>
+            <Button variant='outlined' size="large" type="submit">Search</Button>
+        </form>
     )
 }
 
