@@ -2,63 +2,34 @@ import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@mui/material'
 import { Container } from '@material-ui/core'
 
-const DescriptionBox = ({ selectedState }) => {
-    const [selected, ] = selectedState
+import Description from './Description'
+import { fetchArticleTitle, fetchImdbId } from '../util/Queries'
 
-    const [, setOverview] = useState({})
+const DescriptionBox = ({ selectedState, resultsState }) => {
+    const [selected, ] = selectedState
+    const [results, ] = resultsState
+
+    const [info, setInfo] = useState({})
 
     const [loading, setLoading] = useState(false)
 
-    const fetchMovie = async (id) => {
+    const fetchMovie = async () => {
         setLoading(true)
 
-        const query = `
-        query getMovie {
-            movie(id: ${id}) {
-              id
-              name
-              overview
-              cast(limit: 5) {
-                id
-                person {
-                  name
-                }
-                role {
-                  ... on Cast {
-                    character
-                  }
-                }
-              }
-              crew(limit: 5) {
-                id
-                person {
-                  name
-                }
-                role {
-                  ... on Crew {
-                    job
-                    department
-                  }
-                }
-              }
-            }
-          }
-        `
+        const selectedMovie = results.filter(movie => movie.id === selected)[0]
 
         try {
-            const response = await fetch('https://tmdb.sandbox.zoosh.ie/dev/graphql', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    query
-                })
-            })
-            const movieObj = await response.json()
+            const wpTitle = await fetchArticleTitle(selectedMovie.name, selectedMovie.year)
+            const imdbId = await fetchImdbId(selectedMovie.name, selectedMovie.year)
 
-            setOverview(movieObj.data.movie)
+            console.log(wpTitle)
+
+            setInfo(prevState => ({
+                ...prevState,
+                title: wpTitle,
+                wikipedia: 'https://en.wikipedia.org/wiki/' + wpTitle,
+                imdb: 'https://imdb.com/title/' + imdbId
+            }))
 
             setLoading(false)
         } catch (e) {
@@ -78,7 +49,7 @@ const DescriptionBox = ({ selectedState }) => {
                         <Skeleton />
                         <Skeleton height='20rem'/>
                     </>
-                ) : 'some data'
+                ) : <Description info={info}/>
             }
         </Container>
     )

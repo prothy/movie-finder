@@ -13,6 +13,7 @@ const Layout = () => {
     const resultsLoadingState = useState(false)
 
     const selectedState = useState()
+    const [ selected, ] = selectedState
 
     return (
         <Container>
@@ -24,17 +25,21 @@ const Layout = () => {
                         resultsLoadingState={resultsLoadingState}
                     />
                 </div>
-                <div>
+                <Stack direction='row' height={'40rem'}>
                     <SearchResults 
                         resultsState={resultsState} 
                         selectedState={selectedState}
                         resultsLoadingState={resultsLoadingState}
                     />
-                    <DescriptionBox 
-                        detailedResultsState={detailedResultsState} 
-                        selectedState={selectedState}
-                    />
-                </div>
+                    {
+                        selected ? 
+                            <DescriptionBox 
+                                detailedResultsState={detailedResultsState} 
+                                selectedState={selectedState}
+                                resultsState={resultsState}
+                            /> : <span>Select an item</span>
+                    }
+                </Stack>
             </Stack>
         </Container>
     )
