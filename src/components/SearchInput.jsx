@@ -4,6 +4,7 @@ import { Button } from '@material-ui/core'
 import _ from 'lodash'
 
 import './SearchInput.css'
+import { fetchMoviesByQuery } from '../util/Queries'
 
 const SearchInput = ({ resultsState, detailedResultsState, resultsLoadingState }) => {    
     const [, setResults] = resultsState
@@ -17,41 +18,7 @@ const SearchInput = ({ resultsState, detailedResultsState, resultsLoadingState }
         setResultsLoading(true)
 
         try {
-            const query = `
-            query SearchMovies {
-                searchMovies(query: "${searchVal}") {
-                  id
-                  name
-                  overview
-                  releaseDate
-                  cast {
-                    id
-                    person {
-                      name
-                    }
-                    role {
-                      ... on Cast {
-                        character
-                      }
-                    }
-                  }
-                }
-              }
-            `
-
-            const response = await fetch('https://tmdb.sandbox.zoosh.ie/dev/graphql', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    query
-                })
-            })
-
-            const responseObj = await response.json()
-            const moviesArr = responseObj.data.searchMovies
+            const moviesArr = await fetchMoviesByQuery(searchVal)
 
             setDetailedResults(moviesArr)
             setResults(moviesArr.map(movie => {
