@@ -5,21 +5,17 @@ const Description = ({ info }) => {
         <article>
             <h2>{info.name}</h2>
             <div>
-                <a href={info.imdb} target="_blank" rel="noreferrer">IMDB</a>
-                <a href={info.wikipedia} target="_blank" rel="noreferrer">Wikipedia</a>
+                { info.imdb ? <a href={info.imdb} target="_blank" rel="noreferrer">IMDB</a> : 'IMDB Link unavailable ' }
+                { info.wikipedia ? <a href={info.wikipedia} target="_blank" rel="noreferrer">Wikipedia</a> : 'Wikipedia Link unavailable ' }
             </div>
             <p>{info.excerpt} {info.excerpt.length >= 800 ? <a href={info.wikipedia} target="_blank" rel="noreferrer">Read more</a> : ''}</p>
             <div>
                 <h3>Cast</h3>
-                {/* {info.cast.map(member => (
-                    <span key={member.id}>
-                        <h4>{member.person.name}</h4>
-                        <p>as {member.role}</p>
-                    </span>
-                ))} */}
+                {info.cast.slice(0, 8).map(member => member.person.name).join('; ') }
             </div>
             <div>
-                <h3>Crew</h3>
+                <h3>Similar movies</h3>
+                { info.similar.slice(0, 10).map(similar => similar.name).join('; ') }
             </div>
         </article>
     )
