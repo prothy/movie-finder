@@ -13,7 +13,9 @@ const Layout = () => {
     const resultsLoadingState = useState(false)
 
     const selectedState = useState()
-    const [ selected, ] = selectedState
+    // const [ selected, ] = selectedState
+
+    const modalOpenState = useState(false)
 
     return (
         <Container>
@@ -25,21 +27,20 @@ const Layout = () => {
                         resultsLoadingState={resultsLoadingState}
                     />
                 </div>
-                <Stack direction='row' height={'40rem'}>
+                <div>
                     <SearchResults 
                         resultsState={resultsState} 
                         selectedState={selectedState}
                         resultsLoadingState={resultsLoadingState}
+                        modalOpenState={modalOpenState}
                     />
-                    {
-                        selected ? 
-                            <DescriptionBox 
-                                detailedResultsState={detailedResultsState} 
-                                selectedState={selectedState}
-                                resultsState={resultsState}
-                            /> : <span>Select an item</span>
-                    }
-                </Stack>
+                    <DescriptionBox 
+                        detailedResultsState={detailedResultsState} 
+                        selectedState={selectedState}
+                        resultsState={resultsState}
+                        modalOpenState={modalOpenState}
+                    />
+                </div>
             </Stack>
         </Container>
     )

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@mui/material'
-import { Container } from '@material-ui/core'
+import { Container, Modal } from '@material-ui/core'
 
 import Description from './Description'
 import { fetchArticleExcerpt, fetchArticleTitle, fetchImdbId } from '../util/Queries'
 
-const DescriptionBox = ({ selectedState, resultsState }) => {
+const DescriptionBox = ({ selectedState, resultsState, modalOpenState }) => {
     const [selected, ] = selectedState
     const [results, ] = resultsState
+    const [modalOpen, setModalOpen] = modalOpenState
 
     const [info, setInfo] = useState({})
 
@@ -42,16 +43,32 @@ const DescriptionBox = ({ selectedState, resultsState }) => {
     }, [selected])
 
     return (
-        <Container style={{ height: '100%' }}>
-            { 
-                loading ? (
-                    <>
-                        <Skeleton />
-                        <Skeleton height='20rem'/>
-                    </>
-                ) : <Description info={info}/>
-            }
-        </Container>
+        <Modal 
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }}
+        >
+            <Container style={{
+                background: 'white',
+                border: '1px solid #ccc',
+                borderRadius: '5px',
+                height: '30rem',
+                overflow: 'hidden'
+            }}>
+                { 
+                    loading ? (
+                        <>
+                            <Skeleton />
+                            <Skeleton height='20rem'/>
+                        </>
+                    ) : <Description info={info}/>
+                }
+            </Container>
+        </Modal>
     )
 }
 
