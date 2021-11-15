@@ -5,9 +5,9 @@ import { Container, Modal } from '@material-ui/core'
 import Description from './Description'
 import { fetchArticleExcerpt, fetchArticleTitle, fetchImdbId } from '../util/Queries'
 
-const DescriptionBox = ({ selectedState, resultsState, modalOpenState }) => {
+const DescriptionBox = ({ selectedState, detailedResultsState, modalOpenState }) => {
     const [selected, ] = selectedState
-    const [results, ] = resultsState
+    const [results, ] = detailedResultsState
     const [modalOpen, setModalOpen] = modalOpenState
 
     const [info, setInfo] = useState({})
@@ -19,18 +19,19 @@ const DescriptionBox = ({ selectedState, resultsState, modalOpenState }) => {
 
         const selectedMovie = results.filter(movie => movie.id === selected)[0]
 
+        console.log(selectedMovie)
+
         try {
             const wpTitle = await fetchArticleTitle(selectedMovie.name, selectedMovie.year)
             const imdbId = await fetchImdbId(selectedMovie.name, selectedMovie.year)
-
             const excerpt = await fetchArticleExcerpt(wpTitle)
 
-            setInfo(prevState => ({
-                ...prevState,
+            setInfo({
+                ...selectedMovie,
                 wikipedia: 'https://en.wikipedia.org/wiki/' + wpTitle,
-                imdb: 'https://imdb.com/title/' + imdbId,
-                excerpt
-            }))
+                imdb: imdbId ? 'https://imdb.com/title/' + imdbId : null,
+                excerpt: excerpt
+            })
 
             setLoading(false)
         } catch (e) {
@@ -57,13 +58,16 @@ const DescriptionBox = ({ selectedState, resultsState, modalOpenState }) => {
                 border: '1px solid #ccc',
                 borderRadius: '5px',
                 height: '30rem',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                padding: '3rem'
             }}>
                 { 
                     loading ? (
                         <>
-                            <Skeleton />
-                            <Skeleton height='20rem'/>
+                            <Skeleton height='4rem'/>
+                            <Skeleton height='4rem'/>
+                            <Skeleton height='4rem'/>
+                            <Skeleton height='8rem'/>
                         </>
                     ) : <Description info={info}/>
                 }

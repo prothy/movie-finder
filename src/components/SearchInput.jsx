@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
 import { CircularProgress, TextField } from '@mui/material'
 import { Button } from '@material-ui/core'
-import _ from 'lodash'
 
 import './SearchInput.css'
 import { fetchMoviesByQuery } from '../util/Queries'
 
-const SearchInput = ({ resultsState, detailedResultsState, resultsLoadingState }) => {    
-    const [, setResults] = resultsState
-    const [, setDetailedResults] = detailedResultsState
+const SearchInput = ({ detailedResultsState, resultsLoadingState }) => { 
+    const [, setResults] = detailedResultsState
     const [resultsLoading, setResultsLoading] = resultsLoadingState
 
     const [searchVal, setSearchVal] = useState('')
@@ -19,12 +17,9 @@ const SearchInput = ({ resultsState, detailedResultsState, resultsLoadingState }
 
         try {
             const moviesArr = await fetchMoviesByQuery(searchVal)
+            console.log(moviesArr)
 
-            setDetailedResults(moviesArr)
-            setResults(moviesArr.map(movie => {
-                movie.year = new Date(movie.releaseDate).getFullYear()
-                return _.pick(movie, ['id', 'name', 'year'])
-            }))
+            setResults(moviesArr)
 
             setResultsLoading(false)
 
