@@ -1,5 +1,8 @@
 import React from 'react'
 import { TextField } from '@mui/material'
+import { Button } from '@material-ui/core'
+
+import './SearchInput.css'
 
 const SearchInput = ({ resultsState }) => {    
     const [, setResults] = resultsState
@@ -52,13 +55,15 @@ const SearchInput = ({ resultsState }) => {
     }
 
     return (
-        <TextField 
-            label="Search for movie" 
-            margin="dense"
-            placeholder="Begin typing..."
-            variant="outlined"
-            onChange={ev => {if (ev.target.value.length > 2) searchDatabase(ev)}} 
-        />
+        <span className="search-input">
+            <TextField 
+                label="Movie name" 
+                margin="dense"
+                variant="outlined"
+                onChange={ev => {if (ev.target.value.length > 2) searchDatabase(ev)}} 
+            />
+            <Button variant='outlined' size="large">Search</Button>
+        </span>
     )
 }
 
