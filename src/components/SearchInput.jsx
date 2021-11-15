@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { TextField } from '@mui/material'
 import { Button } from '@material-ui/core'
 
-import './SearchInput.css'
+import '../style/SearchInput.css'
 import { fetchMoviesByQuery } from '../util/Queries'
 
 const SearchInput = ({ detailedResultsState, resultsLoadingState }) => { 
