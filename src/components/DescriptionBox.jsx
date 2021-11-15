@@ -57,7 +57,7 @@ const DescriptionBox = ({ selectedState, detailedResultsState, modalOpenState })
                 background: 'white',
                 border: '1px solid #ccc',
                 borderRadius: '5px',
-                height: '30rem',
+                minHeight: '30rem',
                 overflow: 'hidden',
                 padding: '3rem'
             }}>

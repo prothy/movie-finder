@@ -4,7 +4,7 @@ import DescriptionBox from './DescriptionBox'
 import SearchInput from './SearchInput'
 import SearchResults from './SearchResults'
 
-import { Container } from '@material-ui/core'
+import { Container, Typography } from '@material-ui/core'
 import { Stack } from '@mui/material'
 
 const Layout = () => {
@@ -15,8 +15,11 @@ const Layout = () => {
     const modalOpenState = useState(false)
 
     return (
-        <Container>
+        <Container style={{
+            padding: '3rem'
+        }}>
             <Stack spacing={2}>
+                <Typography variant="h2">Movie finder</Typography>
                 <div>
                     <SearchInput 
                         detailedResultsState={detailedResultsState} 

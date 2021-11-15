@@ -44,6 +44,7 @@ export const fetchArticleExcerpt = async (title) => {
     return articleData.query.pages[page]?.extract
 }
 
+// the one below has a limit of 100 requests per day so it might not work
 export const fetchImdbId = async (name, year) => {
     // normally i would store an api key in an environment variable, but left it in so you don't have to get one separately
     const response = await fetch('https://imdb-api.com/en/API/SearchMovie/k_7dlewn2s/' + name + ' ' + year)
@@ -60,19 +61,16 @@ export const fetchMoviesByQuery = async (searchVal) => {
           id
           name
           releaseDate
+          score
           similar {
               id
               name
+              releaseDate
           }
           cast {
             id
             person {
               name
-            }
-            role {
-              ... on Cast {
-                character
-              }
             }
           }
         }

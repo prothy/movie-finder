@@ -1,10 +1,16 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles'
-import './App.css'
 
 import Layout from './components/Layout'
 
 function App() {
-    const theme = createTheme()
+    const theme = createTheme({
+        typography: {
+            fontFamily: [
+                'Roboto',
+                'sans-serif'
+            ]
+        }
+    })
   
     return (
         <ThemeProvider theme={theme}>

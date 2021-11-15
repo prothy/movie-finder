@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { CircularProgress, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import { Button } from '@material-ui/core'
 
 import './SearchInput.css'
@@ -36,7 +36,7 @@ const SearchInput = ({ detailedResultsState, resultsLoadingState }) => {
                 variant="outlined"
                 onChange={ev => setSearchVal(ev.target.value)} 
             />
-            <Button variant='outlined' size="large" type="submit">{resultsLoading ? <CircularProgress/> : 'Search'}</Button>
+            <Button variant='outlined' size="large" type="submit">{resultsLoading ? 'Searching...' : 'Search'}</Button>
         </form>
     )
 }
