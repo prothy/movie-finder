@@ -41,7 +41,7 @@ export const fetchArticleExcerpt = async (title) => {
 
     const page = Object.keys(articleData.query.pages)[0]
 
-    return articleData.query.pages[page].extract
+    return articleData.query.pages[page]?.extract
 }
 
 export const fetchImdbId = async (name, year) => {
@@ -50,7 +50,7 @@ export const fetchImdbId = async (name, year) => {
 
     const foundMovies = await response.json()
 
-    return foundMovies.results[0].id
+    return foundMovies.results ? foundMovies.results[0].id : undefined
 }
 
 export const fetchMoviesByQuery = async (searchVal) => {
@@ -59,8 +59,11 @@ export const fetchMoviesByQuery = async (searchVal) => {
         searchMovies(query: "${searchVal}") {
           id
           name
-          overview
           releaseDate
+          similar {
+              id
+              name
+          }
           cast {
             id
             person {
